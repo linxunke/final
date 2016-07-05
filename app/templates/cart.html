@@ -1,0 +1,15 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Cart</h1>
+{% for shop in shops %}
+<p>
+<table>
+   <tr valign="top">
+          <td><img src= "{{shop.pic}}" width="128" height="128"><br><a href="{{ url_for('item',id=shop.shop_id) }}">{{shop.name}}</a>&nbsp&nbsp&nbsp<a href="{{ url_for('remove',id=shop.shop_id) }}">Remove</a> </td>
+    </tr>
+</table>
+</p>
+{% endfor %}
+{% endblock %}

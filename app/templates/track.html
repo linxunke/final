@@ -1,0 +1,15 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Track</h1>
+{% for track in tracks %}
+<p>
+<table>
+   <tr valign="top">
+          <td><img src= "{{track.pic}}" width="128" height="128"><br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{track.name}}</td>  <td width="1000" valign="middle">{{track.status}}</td>
+    </tr>
+</table>
+</p>
+{% endfor %}
+{% endblock %}

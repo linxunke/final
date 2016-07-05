@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Details</h1>
+<form action="" method="post" name="item">
+    <td width="1000" valign="top">{{shop.intro}}</td>
+<p>
+<table width="600" border="0" cellspacing="0" cellpadding="0">
+<tr valign="top">
+          <td><img src= "{{shop.pic}}" width="400" height="400"></td>
+          {% if user.id == g.user.id %}<p><a href="{{url_for('put',id=shop.id)}}">Put in Cart</a></p>{% endif %}
+          {% if user.id == g.user.id %}<p><a href="{{url_for('transaction',id=shop.id)}}">Purchase</a></p>{% endif %}
+    </tr>
+    <td width="486" valign="middle">Views:{{shop.views}}&nbsp&nbsp&nbspOrders:{{shop.orders}}</td>
+
+</table>
+</p>
+</form>
+{% endblock %}
