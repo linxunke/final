@@ -17,6 +17,8 @@ class User(db.Model):
     money=db.Column(db.Float(10))
     cart_user = db.relationship('Cart_Shop', backref = 'user', lazy = 'dynamic')
     track_item = db.relationship('Track', backref = 'user', lazy = 'dynamic')
+    mystore_user=db.relationship('Mystore', backref = 'user', lazy = 'dynamic')
+    resource_user=db.relationship('Resource', backref = 'user', lazy = 'dynamic')
     def is_authenticated(self):
         return True
 
@@ -85,3 +87,35 @@ class Track(db.Model):
 
     def __repr__(self):
         return '<Track %r>' % (self.name)
+
+class Mystore(db.Model):
+    id = db.Column(db.Integer, primary_key= True)
+    name = db.Column(db.String (80))
+    intro =db.Column(db.String(200))
+    pic = db.Column(db.String(256))
+    views = db.Column(db.Integer,default = 0)
+    orders = db.Column(db.Integer,default = 0)
+    price=db.Column(db.Float(10))
+    shop_id=db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    def __repr__(self):
+        return '<Mystore %r>' % (self.name)
+
+class Resource(db.Model):
+    id = db.Column(db.Integer, primary_key= True)
+    div_id = db.Column(db.String (80))
+    name = db.Column(db.String (80))
+    pic = db.Column(db.String(256))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    def __repr__(self):
+      return '<Resource %r>' % (self.name)
+
+class Div(db.Model):
+    id = db.Column(db.Integer, primary_key= True)
+    name = db.Column(db.String (80))
+    pic = db.Column(db.String(256))
+
+    def __repr__(self):
+      return '<Div %r>' % (self.name)

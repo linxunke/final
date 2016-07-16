@@ -1,0 +1,11 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="well well-large" style="height: 140px;">
+        <h1>{{ user.nickname }}</h1>
+         {% if user.email %}<p><i>Email: {{user.email}}</i></p>{% endif %}
+         {% if user.money %}<p><i>Deposit: {{user.money}}</i></p>{% endif %}
+         {% if user.last_seen %}<p><i>Last login: {{user.last_seen}}</i></p>{% endif %}
+    </div>
+{% endblock %}

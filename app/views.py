@@ -2,7 +2,7 @@ from flask import render_template, flash, redirect, session, url_for, request, g
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from app import app, db, lm, oid
 from forms import LoginForm, BuyForm, SearchForm
-from models import User, Shop, Cart_Shop, Track,  ROLE_USER, ROLE_ADMIN
+from models import User, Shop, Cart_Shop, Track, Mystore,Div,Resource, ROLE_USER, ROLE_ADMIN
 from datetime import datetime
 from config import  MAX_SEARCH_RESULTS
 @lm.user_loader
@@ -75,16 +75,11 @@ def logout():
 @login_required
 def user(nickname):
     user = User.query.filter_by(nickname = nickname).first()
-    if user == None:
+    if user is None:
         flash('User ' + nickname + ' not found.')
         return redirect(url_for('index'))
-    posts = [
-        { 'author': user, 'body': 'Test post #1' },
-        { 'author': user, 'body': 'Test post #2' }
-    ]
     return render_template('user.html',
-        user = user,
-        posts = posts)
+        user = user)
 
 @app.route('/item/<id>')
 @login_required
@@ -205,3 +200,84 @@ def track():
     tracks=Track.query.filter_by(user_id=g.user.id).all()
     return render_template('track.html',
                            tracks=tracks)
+
+
+@app.route('/putstore/<id>', methods = ['GET', 'POST'])
+@login_required
+def putstore(id):
+    user=g.user
+    if Mystore.query.filter_by(shop_id=id).first() is None:
+        mystore=Shop.query.filter_by(id=id).first()
+        q=Shop.query.filter_by(id=mystore.id).first()
+        l=Mystore(name=q.name,intro=q.intro,pic=q.pic,views=q.views,orders=q.orders,price=q.price,shop_id=id,user_id=g.user.id)
+        db.session.add(l)
+        db.session.commit()
+
+    else:
+         flash('It has existed.')
+    return render_template('putstore.html',
+                           user=user)
+
+@app.route('/removestore/<id>', methods = ['GET', 'POST'])
+@login_required
+def removestore(id):
+    q=Mystore.query.filter_by(shop_id=id).first()
+    db.session.delete(q)
+    db.session.commit()
+    return render_template ('removestore.html')
+
+@app.route('/mystore/<id>')
+@login_required
+def mystore(id):
+     if Mystore.query.filter_by(user_id=g.user.id).first():
+         mystores=Mystore.query.order_by(Mystore.name)
+     else:
+         return redirect (url_for('store_empty'))
+
+     if Resource.query.order_by(Resource.name) is None:
+         return redirect (url_for('div'))
+     else:
+         resource=Resource.query.filter_by(user_id=g.user.id).first()
+     return render_template('mystore.html',
+                              mystores=mystores,
+                            resource=resource
+                            )
+
+@app.route('/store_empty')
+@login_required
+def store_empty():
+
+    return render_template('store_empty.html')
+
+@app.route('/putdecorate/<id>', methods = ['GET', 'POST'])
+@login_required
+def putdecorate(id):
+     user=g.user
+     if Resource.query.filter_by(div_id=id).first() is None:
+          div=Div.query.filter_by(id=id).first()
+          q=Div.query.filter_by(id=div.id).first()
+          l=Resource(div_id=id,name=q.name,pic=q.pic,user_id=g.user.id)
+          db.session.add(l)
+          db.session.commit()
+     return render_template('putdecorate.html',
+                            user=user)
+
+
+@app.route('/div')
+@login_required
+def div():
+    divs=Div.query.order_by(Div.name)
+
+    return render_template('div.html',
+                           divs=divs)
+
+
+
+@app.route('/removedecorate/<id>', methods = ['GET', 'POST'])
+@login_required
+def removedecorate(id):
+    q=Resource.query.filter_by(div_id=id).first()
+    db.session.delete(q)
+    db.session.commit()
+    return render_template ('removedecorate.html')
+

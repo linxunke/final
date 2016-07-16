@@ -1,0 +1,68 @@
+<html xmlns:background-image="http://www.w3.org/1999/xhtml">
+  <head>
+    {% if title %}
+    <title>{{title}} - Shop</title>
+    {% else %}
+    <title>Shop</title>
+    {% endif %}
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/static/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <style>
+      html{overflow-x: hidden;
+      overflow-y: hidden;}
+  </style>
+ <head>
+        <title>Test</title>
+        <style type="text/css" >
+            body
+            {
+                height:1000px;
+                width:100%;
+                margin:0;
+            }
+
+            .cover
+            {
+                width:100%;
+                height:100%;
+                position:absolute;
+                z-index:-10;
+            }
+
+            .cover img
+            {
+                width:100%;
+                height:100%;
+                border:0;
+            }
+        </style>
+    </head>
+  <body>
+    <div class="cover">
+        <image alt="" src="{{resource.pic}}"/>
+    </div>
+
+    <div>Shop:
+        |<a href="{{ url_for('index') }}">Home</a>
+        |<a href="{{ url_for('div') }}">Decorate Page</a></div>
+      {% for mystore in mystores %}
+<p>
+<table>
+   <tr valign="top">
+           <td><img src= "{{mystore.pic}}" width="128" height="128"></td>
+
+       <br><a href="{{ url_for('item',id=mystore.shop_id) }}">{{mystore.name}}</a>&nbsp&nbsp&nbsp<a href="{{ url_for('removestore',id=mystore.shop_id) }}">Remove</a> </br></tr>
+
+</table>
+</p>
+             {% endfor%}
+
+<tr valign="bottom">
+    <img src="/static/images/facebook.jpg" width="100" height="50">
+</tr>
+  </body>
+</html>

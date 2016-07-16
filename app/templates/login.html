@@ -26,7 +26,7 @@ function set_openid(openid, pr)
         <span style="color: red;">[{{error}}]</span>
         {% endfor %}<br>
         |{% for pr in providers %}
-        <a href="javascript:set_openid('{{pr.url}}', '{{pr.name}}');">{{pr.name}}</a> |
+         <a href="javascript:set_openid('{{pr.url}}', '{{pr.name}}');"><img src="/static/images/{{pr.name.lower()}}.png" class="img-polaroid" style="margin:2px;" /></a>
         {% endfor %}
     </p>
     <p>{{form.remember_me}} Remember Me</p>
