@@ -18,6 +18,7 @@ def before_request():
         db.session.add(g.user)
         db.session.commit()
 
+
 @app.route('/')
 @app.route('/index')
 @login_required
@@ -281,3 +282,8 @@ def removedecorate(id):
     db.session.commit()
     return render_template ('removedecorate.html')
 
+@app.route('/contact')
+@login_required
+def contact():
+
+    return render_template('contact.html')
