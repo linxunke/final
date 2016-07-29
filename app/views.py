@@ -1,8 +1,8 @@
 from flask import render_template, flash, redirect, session, url_for, request, g
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from app import app, db, lm, oid
-from forms import LoginForm, BuyForm, SearchForm
-from models import User, Shop, Cart_Shop, Track, Mystore,Div,Resource, ROLE_USER, ROLE_ADMIN
+from forms import LoginForm, BuyForm, SearchForm, CommentForm
+from models import User, Shop, Cart_Shop, Track, Mystore,Div,Resource, Comment, ROLE_USER, ROLE_ADMIN
 from datetime import datetime
 from config import  MAX_SEARCH_RESULTS
 @lm.user_loader
@@ -82,14 +82,25 @@ def user(nickname):
     return render_template('user.html',
         user = user)
 
-@app.route('/item/<id>')
+@app.route('/item/<id>', methods = ['GET', 'POST'])
 @login_required
 def item(id):
      user = g.user
      shop=Shop.query.filter_by(id=id).first()
+     form=CommentForm()
+     if form.validate_on_submit():
+         q=Comment(name=g.user.nickname,comment=form.comment.data,item_id=id)
+         db.session.add(q)
+         db.session.commit()
+         return redirect(url_for('index'))
+     else:
+         comments=Comment.query.filter_by(item_id=id)
      return render_template('item.html',
                             user=user,
-                            shop=shop)
+                            shop=shop,
+                            form=form,
+                            comments=comments
+                           )
 
 @app.route('/transaction/<id>', methods = ['GET', 'POST'])
 @login_required

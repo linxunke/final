@@ -55,7 +55,7 @@ class Shop(db.Model):
     views = db.Column(db.Integer,default = 0)
     orders = db.Column(db.Integer,default = 0)
     price=db.Column(db.Float(10))
-
+    comment_shopr=db.relationship('Comment', backref = 'shop', lazy = 'dynamic')
     def __repr__(self):
         return '<Shop %r>' % (self.name)
 
@@ -119,3 +119,12 @@ class Div(db.Model):
 
     def __repr__(self):
       return '<Div %r>' % (self.name)
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key= True)
+    name=db.Column(db.String (80))
+    comment = db.Column(db.String (1000))
+    item_id = db.Column(db.Integer, db.ForeignKey ('shop.id'))
+
+    def __repr__(self):
+        return '<Comment %r>' % (self.name)

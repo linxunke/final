@@ -4,6 +4,7 @@
 <h1>Details</h1>
 <form action="" method="post" name="item">
     <td width="1000" valign="top">{{shop.intro}}</td>
+     {{form.hidden_tag()}}
 <p>
 <table width="600" border="0" cellspacing="0" cellpadding="0">
 <tr valign="top">
@@ -12,9 +13,23 @@
           {% if user.id == g.user.id %}<p><a href="{{url_for('putstore',id=shop.id)}}">Put in Mystore</a></p>{% endif %}
           {% if user.id == g.user.id %}<p><a href="{{url_for('transaction',id=shop.id)}}">Purchase</a></p>{% endif %}
     </tr>
-    <td width="486" valign="middle">Views:{{shop.views}}&nbsp&nbsp&nbspOrders:{{shop.orders}}</td>
+    <td width="486" valign="middle">Views:{{shop.views}}&nbsp&nbsp&nbspOrders:{{shop.orders}}</td></table>
+    <br>
+        <table><td>Comments:</td>
+        {%for comment in comments%}
+            <br>
+        <tr>
+            {{comment.name}}:{{comment.comment}}
+            </tr>
 
-</table>
+        {%endfor%}
+            </table>
+        <td>{{form.comment(cols=32,rows=4)}}</td>
+        </tr>
+     <tr>
+            <td></td>
+            <td><input type="submit" value="Submit"></td>
+        </tr>
 </p>
 </form>
 {% endblock %}
